@@ -69,10 +69,12 @@ class PetugasController extends Controller
         $query = Peminjaman::with(['user', 'alat', 'pengembalian'])->orderBy('created_at', 'desc');
 
         if ($tgl_pinjam && $tgl_kembali) {
-            $query->whereBetween('tgl_pinjam', [$tgl_pinjam, $tgl_kembali]);
+            $query->whereBetween('tanggal_pinjam', [$tgl_pinjam, $tgl_kembali]);
         }
 
         $peminjaman = $query->get();
+
+        return view('petugas.laporan', compact('peminjaman'));
     }
 
     public function cetakLaporan()

@@ -74,6 +74,7 @@ Route::prefix('petugas')->middleware(['auth', 'role:petugas'])->group(function (
     Route::get('/peminjaman', [PetugasController::class, 'index']);
     Route::get('/peminjaman/{id}/konfirmasi', [PetugasController::class, 'edit']);
     Route::patch('/peminjaman/{id}/update', [PetugasController::class, 'updateStatus']);
+    Route::get('/laporan', [PetugasController::class, 'laporan']);
     Route::get('/laporan/cetak', [PetugasController::class, 'cetakLaporan']);
 });
 

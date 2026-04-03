@@ -9,8 +9,6 @@ use App\Models\Pengembalian;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-use function Symfony\Component\Clock\now;
-
 class AdminController extends Controller
 {
     function index()
@@ -38,12 +36,12 @@ class AdminController extends Controller
         return view('admin.peminjaman.create', compact('users', 'alat'));
     }
 
-    function edit($id)
+    function pinedit($id)
     {
         $peminjaman = Peminjaman::findOrFail($id);
         $users = User::all();
         $alat = Alat::all();
-        return view('admin.peminjaman.pinedit', compact('peminjaman', 'users', 'alat'));
+        return view('admin.peminjaman.edit', compact('peminjaman', 'users', 'alat'));
     }
 
     function pinstore(Request $request)
@@ -78,11 +76,11 @@ class AdminController extends Controller
     function pinupdate(Request $request, $id)
     {
         $request->validate([
-            'users_id' => 'required',
-            'alat_id' => 'required',
+            'user_id' => 'required|exists:users,id',
+            'alat_id' => 'required|exists:alat,id',
             'tanggal_pinjam' => 'required|date',
             'tanggal_rencana' => 'required|date',
-            'jumlah_pinjam' => 'required|integer',
+            'jumlah_pinjam' => 'required|integer|min:1',
             'status' => 'required'
         ]);
 
@@ -132,6 +130,38 @@ class AdminController extends Controller
         return view('admin.pengembalian.pengembalian', compact('pengembalian'));
     }
 
+    function pencreate()
+    {
+        $peminjaman = Peminjaman::where('status', '!=', 'dikembalikan')->get();
+        return view('admin.pengembalian.create', compact('peminjaman'));
+    }
+
+    function penstore(Request $request)
+    {
+        $request->validate([
+            'peminjaman_id' => 'required|exists:peminjaman,id',
+            'tanggal_kembali' => 'required|date',
+            'denda' => 'required|numeric'
+        ]);
+
+        $peminjaman = Peminjaman::findOrFail($request->peminjaman_id);
+
+        if ($peminjaman->status === 'dikembalikan') {
+            return back()->with('error', 'Peminjaman ini sudah dikembalikan.');
+        }
+
+        $peminjaman->update(['status' => 'dikembalikan']);
+
+        $alat = Alat::find($peminjaman->alat_id);
+        if ($alat) {
+            $alat->increment('stok', $peminjaman->jumlah_pinjam);
+        }
+
+        Pengembalian::create($request->all());
+
+        return redirect('/admin/pengembalian')->with('success', 'Data pengembalian berhasil ditambah');
+    }
+
     function penedit($id)
     {
         $pengembalian = Pengembalian::findOrFail($id);
@@ -153,7 +183,7 @@ class AdminController extends Controller
         return redirect('/admin/pengembalian')->with('success', 'Data pengembalian berhasil diubah');
     }
 
-    function destroy($id)
+    function pendestroy($id)
     {
         Pengembalian::findOrFail($id)->delete();
         return redirect('/admin/pengembalian')->with('success', 'Data pengembalian berhasil dihapus');

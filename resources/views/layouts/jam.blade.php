@@ -25,19 +25,19 @@
                             <span class="hide-menu">Home</span>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="./index.html" aria-expanded="false">
+                            <a class="sidebar-link" href="/peminjam" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-layout-dashboard"></i>
                                 </span>
-                                <span class="hide-menu">Dashboard</span>
+                                <span class="hide-menu">Riwayat Pinjam</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="/peminjam" aria-expanded="false">
+                            <a class="sidebar-link" href="/peminjam/alat" aria-expanded="false">
                                 <span>
-                                    <i class="ti ti-file-description"></i>
+                                    <i class="ti ti-list"></i>
                                 </span>
-                                <span class="hide-menu">Peminjaman</span>
+                                <span class="hide-menu">Daftar Alat</span>
                             </a>
                         </li>
                         <li class="sidebar-item">

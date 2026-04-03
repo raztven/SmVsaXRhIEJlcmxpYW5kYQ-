@@ -20,9 +20,9 @@
                         <div class="mb-3">
                             <label class="form-label fw-bold">Pilih Alat</label>
                             <select name="alat_id" class="form-select" required>
-                                <option value="" selected disabled>-- Pilih Alat --</option>
+                                <option value="" disabled {{ !request('alat_id') ? 'selected' : '' }}>-- Pilih Alat --</option>
                                 @foreach($alat as $a)
-                                <option value="{{ $a->id }}">
+                                <option value="{{ $a->id }}" {{ request('alat_id') == $a->id ? 'selected' : '' }}>
                                     {{ $a->nama_alat }} (Tersedia: {{ $a->stok }})
                                 </option>
                                 @endforeach

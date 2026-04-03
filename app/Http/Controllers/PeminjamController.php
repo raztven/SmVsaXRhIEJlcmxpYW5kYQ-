@@ -16,6 +16,12 @@ class PeminjamController extends Controller
         return view('peminjam.index', compact('peminjaman'));
     }
 
+    function alat()
+    {
+        $alat = Alat::with('kategori')->get();
+        return view('peminjam.alat', compact('alat'));
+    }
+
     function create()
     {
         $alat = Alat::where('stok', '>', 0)->get();

@@ -80,6 +80,7 @@ Route::prefix('petugas')->middleware(['auth', 'role:petugas'])->group(function (
 
 Route::prefix('peminjam')->middleware(['auth', 'role:peminjam'])->group(function () {
     Route::get('/', [PeminjamController::class, 'index'])->name('index');
+    Route::get('/alat', [PeminjamController::class, 'alat'])->name('alat.index');
     Route::get('/create', [PeminjamController::class, 'create'])->name('create');
     Route::post('/store', [PeminjamController::class, 'store'])->name('store');
     Route::post('/kembali/{id}', [PeminjamController::class, 'kembali']);
